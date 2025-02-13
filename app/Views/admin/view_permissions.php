@@ -13,11 +13,16 @@
                 <tr>
                     <th>Name</th>
                     <th>Description</th>
+                    <th></th>
                 </tr>
-                <?php foreach ($users as $user): ?>
+                <?php foreach ($permissions as $permission): ?>
                     <tr>
-                        <td><?= $user['name'] ?></td>
-                        <td><?= $user['description'] ?></td>
+                        <td><?= $permission['name'] ?></td>
+                        <td><?= $permission['description'] ?></td>
+                        <td>
+                            <a href="<?= base_url('edit_permission') . '/' . $permission['permission_id'] ?>">edit</a>
+                            <a href="<?= base_url('delete_permission') . '/' . $permission['permission_id'] ?>">delete</a>
+                        </td>
                     </tr>
                 <?php endforeach ?>
             </table>

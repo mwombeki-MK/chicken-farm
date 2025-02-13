@@ -34,8 +34,54 @@ class AdminController extends BaseController
 
         $data['title'] = 'View permissions';
 
-        $data['users'] = $this->permissionmodel->findAll();
+        $data['permissions'] = $this->permissionmodel->findAll();
 
         return view('admin/view_permissions', $data);
+    }
+
+    public function createPermission() {
+
+        if ($this->request->getMethod() === 'POST') {
+
+            $formdata = [
+                'name' => $this->request->getPost('name')
+            ];
+
+            $this->permissionmodel->insert($formdata);
+
+            return redirect()->to(base_url('view_permissions'))->with('msg_success', 'Permission added');
+        }
+
+        return view('admin/create_permission', ['title' => 'Create permission']);
+    }
+
+    public function editPermission($permissionID) {
+
+        if ($this->request->getMethod() === 'POST') {
+
+            $formdata = [
+                'name' => $this->request->getPost('name')
+            ];
+
+            $permission_id = $this->request->getPost('permission_id');
+
+            $this->permissionmodel->update($permission_id, $formdata);
+
+            return redirect()->to(base_url('view_permissions'))->with('msg_success', 'Permission Updated');
+        }
+
+        $data = [
+            'title' => 'Create permission',
+            'permission' => $this->permissionmodel->find($permissionID),
+        ];
+
+        return view('admin/edit_permission', $data);
+    }
+
+    public function deletePermission($permissionID) {
+
+        $this->permissionmodel->delete($permissionID);
+
+        return redirect()->to(base_url('view_permissions'))->with('msg_success', 'Permission deleted');
     }
 }
