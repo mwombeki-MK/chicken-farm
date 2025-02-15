@@ -16,11 +16,10 @@ class RolePermissionModel extends Model
     protected $allowedFields = ['roleID', 'permissionID'];
 
     protected bool $allowEmptyInserts = false;
-    // protected bool $updateOnlyChanged = true;
 
     // Dates
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
-    // protected $updatedField  = 'updated_at';
+    protected $updatedField  = 'updated_at';
 }

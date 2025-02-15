@@ -5,20 +5,28 @@ namespace App\Controllers\admin;
 use App\Controllers\BaseController;
 use App\Models\UserModel;
 use App\Models\PermissionModel;
+use App\Models\RoleModel;
+use App\Models\RolePermissionModel;
 
 class AdminController extends BaseController
 {
 
-    private $usersmodel, $permissionmodel;
+    private $usersmodel, $permissionmodel, $rolemodel, $rolepermissionmodel;
 
     public function __construct() {
 
         $this->usersmodel = new UserModel();
 
         $this->permissionmodel = new PermissionModel();
+
+        $this->rolemodel = new RoleModel();
+
+        $this->rolepermissionmodel = new RolePermissionModel();
     }
 
     public function viewUsers() {
+
+        $data['title'] = 'View users';
 
         $data['users'] = $this->usersmodel->findAll();
 
@@ -83,5 +91,43 @@ class AdminController extends BaseController
         $this->permissionmodel->delete($permissionID);
 
         return redirect()->to(base_url('view_permissions'))->with('msg_success', 'Permission deleted');
+    }
+
+    public function viewRoles() {
+
+        $data['title'] = 'View roles';
+
+        $data['roles'] = $this->rolemodel->findAll();
+
+        return view('admin/view_roles', $data);
+    }
+
+    public function assignRolePermission($roleid) {
+
+        if ($this->request->getMethod() === 'POST') {
+
+            $data_permissions = $this->request->getPost('permissions');
+
+            $this->rolepermissionmodel->where('roleID', $roleid)->delete();
+
+            foreach($data_permissions as $data_p) {
+
+                $this->rolepermissionmodel->insert([
+                    'roleID' => $roleid,
+                    'permissionID' => $data_p
+                ]);
+            }
+
+            return redirect()->to(base_url('view_roles'))->with('msg_success', 'Permission assigned successful');
+        }
+
+        $data = [
+            'title' => 'Assign permission',
+            'role' => $this->rolemodel->find($roleid),
+            'assignedPermissions' => $this->rolepermissionmodel->where('roleID', $roleid)->findAll(),
+            'permissions' => $this->permissionmodel->findAll()
+        ];
+
+        return view('admin/assign_role_permission', $data);
     }
 }

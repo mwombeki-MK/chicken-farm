@@ -4,12 +4,17 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Bootstrap demo</title>
+    <title><?= $title ?></title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 </head>
 
 <body>
     <div class="container-fluid">
+        <span style="color:green">
+            <?php if (session()->has('msg_success')): ?>
+                <?= session('msg_success') ?>
+            <?php endif ?>
+        </span>
         <ul class="list-group">
             <?php if (has_permission('view_user')): ?>
                 <li class="list-group-item"><a href="<?= base_url('view_users') ?>">View user</a></li>
