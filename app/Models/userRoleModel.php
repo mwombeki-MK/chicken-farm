@@ -16,11 +16,11 @@ class UserRoleModel extends Model
     protected $allowedFields = ['userID', 'roleID'];
 
     protected bool $allowEmptyInserts = false;
-    // protected bool $updateOnlyChanged = true;
+    protected bool $updateOnlyChanged = true;
 
     // Dates
     protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
-    // protected $updatedField  = 'updated_at';
+    protected $updatedField  = 'updated_at';
 }
